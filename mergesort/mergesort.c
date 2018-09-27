@@ -4,23 +4,33 @@
 
 #include "mergesort.h"
 
+// This code is converted from Java code provided by Nic McPhee
+
+// These act as "private" functions - so they are declared here instead of the header file
+void mergesortRange(int *values, int startIndex, int endIndex);
+void mergeRanges(int *values, int startIndex, int midPoint, int endIndex);
+bool needsSorting(int rangeSize);
+
 void mergesort(int size, int *values) {
-  mergesortRange(size, values, 0, size - 1);
+  mergesortRange(values, 0, size);
 }
 
-void mergesortRange(int size, int *values, int startIndex, int endIndex) {
+
+// Recursivly sorts a subarray
+void mergesortRange(int *values, int startIndex, int endIndex) {
   int rangeSize = endIndex - startIndex;
   if(needsSorting(rangeSize)) {
     int midPoint = (startIndex + endIndex) / 2;
-    mergesortRange(size, values, startIndex, midPoint);
-    mergesortRange(size, values, midPoint, endIndex);
-    mergeRanges(size, values, startIndex, midPoint, endIndex);
+    mergesortRange(values, startIndex, midPoint);
+    mergesortRange(values, midPoint, endIndex);
+    mergeRanges(values, startIndex, midPoint, endIndex);
   }
 }
 
-void mergeRanges(int size, int *values, int startIndex, int midPoint, int endIndex) {
-  final int = rangeSize = endIndex - startIndex;
-  int destination[rangeSize];
+// Merges subarrays in place
+void mergeRanges(int *values, int startIndex, int midPoint, int endIndex) {
+  const int rangeSize = endIndex - startIndex;
+  int *destination = (int*) calloc(rangeSize, sizeof(int));
   int firstIndex = startIndex;
   int secondIndex = midPoint;
   int copyIndex = 0;
@@ -51,6 +61,7 @@ void mergeRanges(int size, int *values, int startIndex, int midPoint, int endInd
   for(int i = 0; i < rangeSize; i++) {
     values[i + startIndex] = destination[i];
   }
+  free(destination);
 }
 
 bool needsSorting(int rangeSize) {
